@@ -4,11 +4,18 @@
 
 int main() {
   kv::KVStore store;
-  std::string line;
 
+  // Use an absolute path to avoid “where did my WAL go?” issues.
+  if (!store.open("/tmp/kv.wal")) {
+    std::cerr << "ERROR: failed to open WAL at /tmp/kv.wal\n";
+    return 1;
+  }
+
+  std::string line;
   while (true) {
     std::cout << "kv> ";
-    std::getline(std::cin, line);
+    if (!std::getline(std::cin, line)) break;
+
     std::istringstream iss(line);
     std::string cmd;
     iss >> cmd;
@@ -26,7 +33,7 @@ int main() {
     } else if (cmd == "DEL") {
       std::string k;
       iss >> k;
-      std::cout << store.del(k) << "\n";
+      std::cout << (store.del(k) ? "1" : "0") << "\n";
     } else if (cmd == "SIZE") {
       std::cout << store.size() << "\n";
     } else if (cmd == "EXIT") {
