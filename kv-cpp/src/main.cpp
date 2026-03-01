@@ -8,7 +8,7 @@ int main() {
 
   kv::KVStore store;
   bool ok = store.open("/tmp/kv.wal");
-  std::cerr << "open(/tmp/kv.wal) -> " << (ok ? "true" : "false") << "\n" << std::flush;
+  //std::cerr << "open(/tmp/kv.wal) -> " << (ok ? "true" : "false") << "\n" << std::flush;
   if (!ok) return 1;
 
   std::string line;
@@ -40,7 +40,10 @@ int main() {
     } else if (cmd == "SNAP") {
        bool ok = store.checkpoint("/tmp/kv.snapshot", "/tmp/kv.wal");
        std::cerr << (ok ? "SNAP OK\n" : "SNAP FAIL\n");
-      }else {
+    }else if (cmd == "FLUSH") {
+       bool ok = store.flush_wal();
+       std::cerr << (ok ? "FLUSH OK\n" : "FLUSH FAIL\n") << std::flush;
+    }else {
         std::cerr << "Unknown\n" << std::flush;
     }
   }

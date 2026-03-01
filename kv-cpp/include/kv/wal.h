@@ -3,6 +3,8 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <vector>   // <-- add
+#include <iostream>
 
 namespace kv {
 
@@ -27,9 +29,11 @@ class Wal {
   bool append_del(uint64_t seq, std::string_view key);
 
   bool truncate_to_last_good();
+  bool flush();
 
  private:
   bool write_record(Type t, uint64_t seq, std::string_view key, std::string_view value);
+  std::vector<std::string> buffer_;
 
   int fd_ = -1;
   std::string path_;

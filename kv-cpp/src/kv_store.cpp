@@ -27,23 +27,24 @@ namespace kv {
 }*/
 bool KVStore::open(const std::string& wal_path) {
   std::unique_lock lock(mu_);
-  std::cerr << "[open] start\n";
+  //std::cerr << "[open] start\n";
 
   if (opened_) return true;
 
-  std::cerr << "[open] load snapshot\n";
+  //std::cerr << "[open] load snapshot\n";
   (void)load_from_file_unlocked("/tmp/kv.snapshot"); // <-- NO DEADLOCK
 
-  std::cerr << "[open] wal open: " << wal_path << "\n";
+  //std::cerr << "[open] wal open: " << wal_path << "\n";
   if (!wal_.open(wal_path)) return false;
 
-  std::cerr << "[open] wal replay\n";
+  //std::cerr << "[open] wal replay\n";
   uint64_t max_seq = 0;
   if (!wal_.replay_into(*this, max_seq)) return false;
 
   seq_ = max_seq;
   opened_ = true;
   std::cerr << "[open] done (seq=" << seq_ << ")\n";
+  //std::cerr << "[open] map size after replay = " << map_.size() << "\n";
   return true;
 }
 void KVStore::put(std::string key, std::string value) {
@@ -51,12 +52,14 @@ void KVStore::put(std::string key, std::string value) {
   if (!opened_) return; // or throw
 
   uint64_t s = ++seq_;
-  if (!wal_.append_put(s, key, value)) {
-    // do not apply if durability failed
-    return;
+  if (!wal_.append_put(s, key, value))  return;
+
+  if ((s % 5) == 0) {
+     if (!wal_.flush()) return; // better than ignoring
+  
+     map_[std::move(key)] = std::move(value);
   }
-  map_[std::move(key)] = std::move(value);
-}
+  }
 
 std::optional<std::string> KVStore::get(const std::string& key) const {
   std::shared_lock lock(mu_);
@@ -70,8 +73,10 @@ bool KVStore::del(const std::string& key) {
   if (!opened_) return false; // or throw
 
   uint64_t s = ++seq_;
-  if (!wal_.append_del(s, key)) {
-    return false;
+  if (!wal_.append_del(s, key)) return false;
+
+  if ((s % 5) == 0) {
+     if (!wal_.flush()) return false; // better than ignoring
   }
   return map_.erase(key) > 0;
 }
@@ -145,6 +150,19 @@ bool KVStore::save_to_file_unlocked(const std::string& path) const {
     out << k << '\t' << v << '\n';
   }
   return true;
+}
+
+/*void KVStore::apply_put_no_log_unlocked(std::string key, std::string value) {
+  map_[std::move(key)] = std::move(value);
+}
+
+void KVStore::apply_del_no_log_unlocked(const std::string& key) {
+  map_.erase(key);
+}*/
+
+bool KVStore::flush_wal() {
+  std::unique_lock lock(mu_);
+  return wal_.flush();
 }
 
 } // namespace kv

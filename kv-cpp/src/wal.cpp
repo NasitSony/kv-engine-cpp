@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <unistd.h>
+#include <iostream>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -117,14 +118,34 @@ bool Wal::write_record(Type t, uint64_t seq, std::string_view key, std::string_v
     crc = crc32_update(crc, reinterpret_cast<const uint8_t*>(value.data()), value.size());
   }
 
-  if (!write_all(fd_, &h, sizeof(h))) return false;
-  if (!key.empty() && !write_all(fd_, key.data(), key.size())) return false;
-  if (t == Type::Put && !value.empty() && !write_all(fd_, value.data(), value.size())) return false;
-  if (!write_all(fd_, &crc, sizeof(crc))) return false;
+  // Serialize into a contiguous buffer
+  const size_t total =
+      sizeof(WalHeader) +
+      key.size() +
+      (t == Type::Put ? value.size() : 0) +
+      sizeof(uint32_t);
 
-  // strict durability
-  if (::fsync(fd_) != 0) return false;
-   return true;
+  std::string rec;
+  rec.resize(total);
+
+  char* p = rec.data();
+  std::memcpy(p, &h, sizeof(h));
+  p += sizeof(h);
+
+  if (!key.empty()) {
+    std::memcpy(p, key.data(), key.size());
+    p += key.size();
+  }
+  if (t == Type::Put && !value.empty()) {
+    std::memcpy(p, value.data(), value.size());
+    p += value.size();
+  }
+
+  std::memcpy(p, &crc, sizeof(crc));
+
+  // v0.4: buffer record, do not fsync here
+  buffer_.push_back(std::move(rec));
+  return true;
 }
 
 bool Wal::replay_into(KVStore& store, uint64_t& max_seq) {
@@ -134,9 +155,15 @@ bool Wal::replay_into(KVStore& store, uint64_t& max_seq) {
 
   uint64_t last_good = 0;
   max_seq = 0;
+  int applied = 0;
+
+  
 
   for (;;) {
     WalHeader h{};
+
+    
+
     ssize_t r = ::read(fd_, &h, sizeof(h));
     if (r == 0) break;                         // clean EOF
     if (r < 0) { if (errno == EINTR) continue; break; }
@@ -161,14 +188,26 @@ bool Wal::replay_into(KVStore& store, uint64_t& max_seq) {
       crc = crc32_update(crc, reinterpret_cast<const uint8_t*>(val.data()), val.size());
     }
 
+   
+
+
     if (crc != stored_crc) break;
 
     // Apply to store WITHOUT re-logging.
-    if (h.type == static_cast<uint8_t>(Type::Put)) {
-      store.apply_put_no_log(std::move(key), std::move(val));
+    /*if (h.type == static_cast<uint8_t>(Type::Put)) {
+       store.apply_put_no_log_unlocked(std::move(key), std::move(val));
     } else {
-      store.apply_del_no_log(key);
-    }
+      store.apply_del_no_log_unlocked(key);
+    }*/
+  
+   if (h.type == static_cast<uint8_t>(Type::Put)) {
+     store.map_[std::move(key)] = std::move(val);
+     applied++;
+    } else {
+      store.map_.erase(key);
+     \
+      applied++;
+   }
 
     max_seq = std::max(max_seq, h.seq);
 
@@ -181,6 +220,7 @@ bool Wal::replay_into(KVStore& store, uint64_t& max_seq) {
 
   // ready for appends
   ::lseek(fd_, 0, SEEK_END);
+  //std::cerr << "[replay] applied_count=" << applied << "\n";
   return true;
 }
 
@@ -191,6 +231,28 @@ bool Wal::truncate_to_last_good() {
 
 void Wal::close() {
   if (fd_ >= 0) { ::close(fd_); fd_ = -1; }
+}
+
+bool Wal::flush() {
+  if (fd_ < 0) return false;
+  if (buffer_.empty()) return true;
+
+  for (const auto& rec : buffer_) {
+    const char* p = rec.data();
+    size_t n = rec.size();
+    while (n > 0) {
+      ssize_t w = ::write(fd_, p, n);
+      if (w < 0) return false;
+      p += static_cast<size_t>(w);
+      n -= static_cast<size_t>(w);
+    }
+  }
+
+  // macOS: use fsync (fdatasync is not available)
+  if (::fsync(fd_) != 0) return false;
+
+  buffer_.clear();
+  return true;
 }
 
 } // namespace kv
