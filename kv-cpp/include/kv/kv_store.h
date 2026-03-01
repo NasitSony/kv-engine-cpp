@@ -22,8 +22,15 @@ public:
   bool save_to_file(const std::string& path) const;
   bool load_from_file(const std::string& path);
 
+  bool save_snapshot(const std::string& path);  
+  bool load_snapshot(const std::string& path);
+  bool checkpoint(const std::string& snapshot_path,
+                const std::string& wal_path);
+
 private:
   friend class Wal;
+  bool load_from_file_unlocked(const std::string& path);
+  bool save_to_file_unlocked(const std::string& path) const;
 
   // Used ONLY during WAL replay to avoid re-logging.
   void apply_put_no_log(std::string key, std::string value) {

@@ -18,6 +18,8 @@ class Wal {
 
   bool open(const std::string& path);
 
+  void close();
+
   // Returns false only on hard I/O error. Corrupt/truncated tail is treated as normal boundary.
   bool replay_into(class KVStore& store, uint64_t& max_seq);
 

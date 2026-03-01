@@ -1,20 +1,24 @@
 #include "kv/kv_store.h"
 #include <iostream>
 #include <sstream>
+#include <string>
 
 int main() {
-  kv::KVStore store;
+  std::cerr << "CLI started\n" << std::flush;
 
-  // Use an absolute path to avoid “where did my WAL go?” issues.
-  if (!store.open("/tmp/kv.wal")) {
-    std::cerr << "ERROR: failed to open WAL at /tmp/kv.wal\n";
-    return 1;
-  }
+  kv::KVStore store;
+  bool ok = store.open("/tmp/kv.wal");
+  std::cerr << "open(/tmp/kv.wal) -> " << (ok ? "true" : "false") << "\n" << std::flush;
+  if (!ok) return 1;
 
   std::string line;
   while (true) {
-    std::cout << "kv> ";
-    if (!std::getline(std::cin, line)) break;
+    std::cerr << "kv> " << std::flush;
+
+    if (!std::getline(std::cin, line)) {
+      std::cerr << "\nEOF\n" << std::flush;
+      break;
+    }
 
     std::istringstream iss(line);
     std::string cmd;
@@ -24,20 +28,21 @@ int main() {
       std::string k, v;
       iss >> k >> v;
       store.put(k, v);
-      std::cout << "OK\n";
+      std::cerr << "OK\n" << std::flush;
     } else if (cmd == "GET") {
       std::string k;
       iss >> k;
       auto v = store.get(k);
-      std::cout << (v ? *v : "(nil)") << "\n";
-    } else if (cmd == "DEL") {
-      std::string k;
-      iss >> k;
-      std::cout << (store.del(k) ? "1" : "0") << "\n";
-    } else if (cmd == "SIZE") {
-      std::cout << store.size() << "\n";
+      std::cerr << (v ? *v : "(nil)") << "\n" << std::flush;
     } else if (cmd == "EXIT") {
+      std::cerr << "bye\n" << std::flush;
       break;
+    } else if (cmd == "SNAP") {
+       bool ok = store.checkpoint("/tmp/kv.snapshot", "/tmp/kv.wal");
+       std::cerr << (ok ? "SNAP OK\n" : "SNAP FAIL\n");
+      }else {
+        std::cerr << "Unknown\n" << std::flush;
     }
   }
+  return 0;
 }

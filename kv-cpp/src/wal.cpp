@@ -189,4 +189,8 @@ bool Wal::truncate_to_last_good() {
   return ::ftruncate(fd_, static_cast<off_t>(last_good_offset_)) == 0;
 }
 
+void Wal::close() {
+  if (fd_ >= 0) { ::close(fd_); fd_ = -1; }
+}
+
 } // namespace kv
