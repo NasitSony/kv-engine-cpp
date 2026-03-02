@@ -82,6 +82,8 @@ cmake --build build
 ./build/kv_cli
 ```
 💻 CLI Commands
+
+```bash
 PUT key value
 GET key
 DEL key
@@ -89,3 +91,4 @@ SIZE
 SNAP
 FLUSH
 EXIT
+```
