@@ -56,3 +56,28 @@ On startup:
 - validate records (CRC)
 - apply valid entries
 - stop at first corrupted entry
+
+
+---
+
+## 🧪 Failure Model
+
+Handled:
+- Process crashes (`kill -9`)
+- Partial/torn writes
+- Interrupted disk writes
+
+Not yet handled:
+- Distributed replication
+- Byzantine faults
+- Performance tuning beyond batching
+
+---
+
+## ⚙️ How to Run
+
+```bash
+cmake -S . -B build
+cmake --build build
+./build/kv_cli
+```
