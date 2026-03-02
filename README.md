@@ -8,31 +8,43 @@ Inspired by real-world storage systems such as RocksDB and etcd, this project ex
 
 ## ⚡ Key Results
 
-- Ensures crash-consistent recovery with **zero data loss up to the last durability boundary (fsync / FLUSH)**
-- Implements **group commit batching**, reducing fsync overhead and improving write efficiency under concurrent workloads
-- Achieves **deterministic recovery**, guaranteeing identical state reconstruction via WAL replay across repeated crash scenarios
-- Detects and safely ignores **partial or corrupted WAL records** using CRC validation, preventing state corruption
-- Reduces recovery time via **snapshot-based checkpointing**, avoiding full log replay on startup
+- Ensures **crash-consistent recovery** with zero data loss up to the last durability boundary (`fsync` / `FLUSH`)
+- Implements **group commit batching**, improving write throughput by ~2.7× compared to flush-per-write
+- Achieves **deterministic recovery**, guaranteeing identical state reconstruction via WAL replay
+- Detects and safely ignores **partial or corrupted WAL records** using CRC validation
+- Reduces recovery time via **snapshot-based checkpointing**, avoiding full log replay
+
+## 📊 Performance Snapshot (Group Commit vs Immediate Flush)
+
+**Workload:** 10,000 sequential `PUT`s + final `FLUSH` (local disk)
+
+|      Mode       |    Setting   | total_ms |   ops/sec      |
+|-----------------|-------------:|---------:|---------------:|
+| Immediate flush | `SETBATCH 1` |  255 ms  |  39,216 ops/s  |
+| Group commit    | `SETBATCH 5` |  96 ms   | 104,167 ops/s  |
+
+**Result:** Group commit improves write throughput by ~**2.66×** by batching WAL flushes (reducing flush frequency compared to flushing every write).
 
 
 ## 🏭 Why This Matters (Industry Context)
 
-Modern storage and distributed systems rely on strong durability and recovery guarantees. Systems such as databases, stream processors, and consensus-based services depend on write-ahead logging (WAL), crash consistency, and deterministic state reconstruction to ensure correctness under failures.
+Modern storage and distributed systems rely on strong durability and recovery guarantees. Databases, stream processors, and consensus systems depend on write-ahead logging (WAL), crash consistency, and deterministic state reconstruction to maintain correctness under failures.
 
-This project implements these core primitives from first principles, mirroring the design foundations of production systems like RocksDB, etcd, and distributed databases. The same mechanisms—WAL, batching (group commit), snapshotting, and recovery—are essential for building reliable data infrastructure at scale.
+This project implements these core primitives from first principles, mirroring the foundations of production systems such as RocksDB, etcd, and distributed databases. WAL, batching (group commit), snapshotting, and recovery form the backbone of reliable data infrastructure.
 
-By focusing on failure scenarios (crashes, partial writes, corruption), this system demonstrates how correctness and durability are enforced in real-world backends, forming the basis for higher-level systems such as replication, consensus, and fault-tolerant distributed services.
+By focusing on real failure scenarios (crashes, partial writes, corruption), this system demonstrates how correctness and durability are enforced in production backends, forming the basis for replication, consensus, and fault-tolerant distributed systems.
 
 
-## 🚀 Current Version: v0.4  
-**WAL + Crash Recovery + Snapshots + Group Commit**
+## 🚀 Current Version: v0.4
+
+WAL • Crash Recovery • Snapshots • Group Commit
 
 ---
 
 ## ✅ Guarantees
 
 ### Crash Consistency
-After a crash, the system recovers to the last valid state using snapshot + WAL replay.
+After a crash, the system recovers to the last valid durable state using snapshot + WAL replay.
 
 ### Deterministic Recovery
 Replaying the same WAL produces the same state.
