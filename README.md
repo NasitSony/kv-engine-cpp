@@ -96,3 +96,9 @@ EXIT
 ```bash
 ./build/kv_cli
 ```
+
+```bash
+PUT x 100
+PUT y 200
+FLUSH
+```
