@@ -47,9 +47,9 @@ Disk
 ### Write Path (v0.4)
 
 PUT / DEL
-→ append to WAL buffer
-→ apply to in-memory map
-→ fsync on batch boundary / FLUSH
+- append to WAL buffer
+- apply to in-memory map
+- fsync on batch boundary / FLUSH
 
 
 ---
