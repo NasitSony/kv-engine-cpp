@@ -14,6 +14,16 @@ Inspired by real-world storage systems such as RocksDB and etcd, this project ex
 - Detects and safely ignores **partial or corrupted WAL records** using CRC validation, preventing state corruption
 - Reduces recovery time via **snapshot-based checkpointing**, avoiding full log replay on startup
 
+
+## 🏭 Why This Matters (Industry Context)
+
+Modern storage and distributed systems rely on strong durability and recovery guarantees. Systems such as databases, stream processors, and consensus-based services depend on write-ahead logging (WAL), crash consistency, and deterministic state reconstruction to ensure correctness under failures.
+
+This project implements these core primitives from first principles, mirroring the design foundations of production systems like RocksDB, etcd, and distributed databases. The same mechanisms—WAL, batching (group commit), snapshotting, and recovery—are essential for building reliable data infrastructure at scale.
+
+By focusing on failure scenarios (crashes, partial writes, corruption), this system demonstrates how correctness and durability are enforced in real-world backends, forming the basis for higher-level systems such as replication, consensus, and fault-tolerant distributed services.
+
+
 ## 🚀 Current Version: v0.4  
 **WAL + Crash Recovery + Snapshots + Group Commit**
 
@@ -170,13 +180,6 @@ It is about understanding:
 - Deterministic recovery
 - Storage → distributed systems connection
 
-🧠 Why This Matters
-
-Modern systems depend on:
-- Reliable persistence
-- Correct recovery after crashes
-- Deterministic state reconstruction
-- This project builds those foundations step by step.
 
 
 🔧 Future Directions
