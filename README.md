@@ -5,6 +5,15 @@ A crash-consistent key–value storage engine in C++ implementing write-ahead lo
 Inspired by real-world storage systems such as RocksDB and etcd, this project explores how core storage primitives evolve toward distributed and fault-tolerant systems.
 ---
 
+
+## ⚡ Key Results
+
+- Ensures crash-consistent recovery with **zero data loss up to the last durability boundary (fsync / FLUSH)**
+- Implements **group commit batching**, reducing fsync overhead and improving write efficiency under concurrent workloads
+- Achieves **deterministic recovery**, guaranteeing identical state reconstruction via WAL replay across repeated crash scenarios
+- Detects and safely ignores **partial or corrupted WAL records** using CRC validation, preventing state corruption
+- Reduces recovery time via **snapshot-based checkpointing**, avoiding full log replay on startup
+
 ## 🚀 Current Version: v0.4  
 **WAL + Crash Recovery + Snapshots + Group Commit**
 
