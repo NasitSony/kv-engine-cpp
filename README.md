@@ -33,4 +33,10 @@ Writes are **batched** and become durable on:
 
 ### Architecture
 
-
+Client
+↓
+KVStore (in-memory map)
+↓
+WAL (append-only log, buffered)
+↓
+Disk
