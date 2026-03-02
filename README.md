@@ -50,3 +50,9 @@ PUT / DEL
 
 ### Recovery Path
 
+On startup:
+- load snapshot
+- replay WAL
+- validate records (CRC)
+- apply valid entries
+- stop at first corrupted entry
