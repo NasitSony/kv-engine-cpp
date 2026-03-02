@@ -102,3 +102,81 @@ PUT x 100
 PUT y 200
 FLUSH
 ```
+Crash:
+
+```bash
+pkill -9 kv_cli
+```
+
+Restart:
+
+```bash
+./build/kv_cli
+GET x   # 100
+GET y   # 200
+```
+
+📁 Storage Files
+- WAL: /tmp/kv.wal
+- Snapshot: /tmp/kv.snapshot
+
+🛣️ Roadmap
+
+v0.1 — In-Memory KV Store ✅
+- Thread-safe map
+- Basic operations: PUT, GET, DEL
+
+v0.2 — WAL + Crash Recovery ✅
+- Append-only WAL
+- fsync-based durability
+- Recovery via replay
+- Corruption handling
+
+v0.3 — Snapshots + Compaction ✅
+- Snapshot (checkpoint)
+- WAL truncation
+- Faster recovery
+
+v0.4 — Group Commit (Current) ✅
+- Buffered WAL writes
+- Batched fsync (group commit)
+- Manual FLUSH
+- Explicit durability boundary
+
+v0.5 — Replication (next)
+- Leader-based replication
+- Log replication
+- Basic consensus
+
+v0.6 — Fault-Tolerant / BFT Extensions
+- Quorum replication
+- Byzantine fault tolerance
+- Integration with consensus protocols
+
+🎯 Project Goals
+
+This project is not about building a fast KV store.
+It is about understanding:
+- Failure-aware system design
+- Durability guarantees
+- Deterministic recovery
+- Storage → distributed systems connection
+
+🧠 Why This Matters
+
+Modern systems depend on:
+- Reliable persistence
+- Correct recovery after crashes
+- Deterministic state reconstruction
+- This project builds those foundations step by step.
+
+🔧 Future Directions
+
+- Failure injection testing
+- Deterministic replay framework
+- Integration with distributed consensus
+- Formal verification (long-term)
+
+👤 Author
+
+Built as part of a deeper exploration into distributed systems, fault tolerance, and correctness-driven system design.
