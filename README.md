@@ -170,12 +170,14 @@ Modern systems depend on:
 - Deterministic state reconstruction
 - This project builds those foundations step by step.
 
+
 🔧 Future Directions
 
 - Failure injection testing
 - Deterministic replay framework
 - Integration with distributed consensus
 - Formal verification (long-term)
+
 
 👤 Author
 
