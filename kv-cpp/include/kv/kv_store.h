@@ -29,6 +29,7 @@ public:
                 const std::string& wal_path);
   
   bool flush_wal();
+  void set_group_commit_every(int n) ;
 
 private:
   friend class Wal;

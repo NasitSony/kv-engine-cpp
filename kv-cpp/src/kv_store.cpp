@@ -25,6 +25,10 @@ namespace kv {
 
   return true;
 }*/
+
+int group_commit_every_ = 5;   // default
+
+
 bool KVStore::open(const std::string& wal_path) {
   std::unique_lock lock(mu_);
   //std::cerr << "[open] start\n";
@@ -47,7 +51,12 @@ bool KVStore::open(const std::string& wal_path) {
   //std::cerr << "[open] map size after replay = " << map_.size() << "\n";
   return true;
 }
-void KVStore::put(std::string key, std::string value) {
+
+void KVStore::set_group_commit_every(int n) {
+  std::unique_lock lock(mu_);
+  group_commit_every_ = (n <= 0) ? 1 : n;
+}
+/*void KVStore::put(std::string key, std::string value) {
   std::unique_lock lock(mu_);
   if (!opened_) return; // or throw
 
@@ -59,7 +68,29 @@ void KVStore::put(std::string key, std::string value) {
   
      map_[std::move(key)] = std::move(value);
   }
+  }*/
+
+ void KVStore::put(std::string key, std::string value) {
+  std::unique_lock lock(mu_);
+  if (!opened_) return; // or throw
+
+  uint64_t s = ++seq_;
+
+  // 1) WAL first (write-ahead)
+  if (!wal_.append_put(s, key, value)) return;
+
+  // 2) Apply to in-memory state immediately
+  map_[key] = value;  // keep it simple and correct
+
+  // 3) Durability boundary: flush periodically (group commit)
+
+  if ((s % group_commit_every_) == 0) {
+      if (!wal_.flush()) return;
   }
+  /*if ((s % 5) == 0) {
+    if (!wal_.flush()) return;
+  }*/
+}
 
 std::optional<std::string> KVStore::get(const std::string& key) const {
   std::shared_lock lock(mu_);
