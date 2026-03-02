@@ -92,3 +92,7 @@ SNAP
 FLUSH
 EXIT
 ```
+💥 Crash Recovery Demo
+```bash
+./build/kv_cli
+```
