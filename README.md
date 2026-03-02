@@ -146,6 +146,24 @@ GET x   # 100
 GET y   # 200
 ```
 
+## 📊 Performance Benchmark Demo
+
+Run benchmark with different durability settings:
+
+### Immediate flush (no batching)
+```bash
+./build/kv_cli
+SETBATCH 1
+BENCH 10000
+```
+
+### Group commit (batched flush)
+```bash
+./build/kv_cli
+SETBATCH 5
+BENCH 10000
+```
+
 📁 Storage Files
 - WAL: /tmp/kv.wal
 - Snapshot: /tmp/kv.snapshot
