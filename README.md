@@ -1,9 +1,8 @@
 # kv-engine-cpp
 
-A correctness-first key–value storage engine built in C++, focusing on durability, crash recovery, and failure-aware system design.
+A crash-consistent key–value storage engine in C++ implementing write-ahead logging (WAL), group commit, and deterministic recovery. Designed with a correctness-first approach, the system focuses on durability guarantees, failure handling, and reliable state reconstruction under crash scenarios.
 
-This project explores how real storage systems behave under failure, starting from first principles and evolving toward distributed and fault-tolerant systems.
-
+Inspired by real-world storage systems such as RocksDB and etcd, this project explores how core storage primitives evolve toward distributed and fault-tolerant systems.
 ---
 
 ## 🚀 Current Version: v0.4  
