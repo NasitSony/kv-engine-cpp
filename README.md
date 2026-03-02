@@ -81,3 +81,11 @@ cmake -S . -B build
 cmake --build build
 ./build/kv_cli
 ```
+💻 CLI Commands
+PUT key value
+GET key
+DEL key
+SIZE
+SNAP
+FLUSH
+EXIT
