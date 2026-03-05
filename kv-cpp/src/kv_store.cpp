@@ -26,7 +26,7 @@ namespace kv {
   return true;
 }*/
 
-int group_commit_every_ = 5;   // default
+//int group_commit_every_ = 5;   // default
 
 
 bool KVStore::open(const std::string& wal_path) {
@@ -106,8 +106,8 @@ bool KVStore::del(const std::string& key) {
   uint64_t s = ++seq_;
   if (!wal_.append_del(s, key)) return false;
 
-  if ((s % 5) == 0) {
-     if (!wal_.flush()) return false; // better than ignoring
+  if ((s % group_commit_every_) == 0) {
+     if (!wal_.flush()) return false;
   }
   return map_.erase(key) > 0;
 }
@@ -115,6 +115,44 @@ bool KVStore::del(const std::string& key) {
 std::size_t KVStore::size() const {
   std::shared_lock lock(mu_);
   return map_.size();
+}
+
+bool KVStore::save_snapshot(const std::string& path) {
+  std::shared_lock lock(mu_);
+
+  std::string tmp = path + ".tmp";
+
+  std::ofstream out(tmp);
+  if (!out) return false;
+
+  for (const auto& [k, v] : map_) {
+    out << k << '\t' << v << '\n';
+  }
+
+  out.close();
+
+  // atomic replace
+  if (std::rename(tmp.c_str(), path.c_str()) != 0) {
+    return false;
+  }
+
+  return true;
+}
+
+bool KVStore::load_snapshot(const std::string& path) {
+  std::unique_lock lock(mu_);
+
+  std::ifstream in(path);
+  if (!in) return false;
+
+  map_.clear();
+
+  std::string k, v;
+  while (in >> k >> v) {
+    map_[k] = v;
+  }
+
+  return true;
 }
 
 // Keep snapshot utilities if you want, but note:
@@ -129,23 +167,7 @@ bool KVStore::save_to_file(const std::string& path) const {
   return save_to_file_unlocked(path);
 }
 
-bool KVStore::save_snapshot(const std::string& path) {
-  std::shared_lock lock(mu_);
 
-  std::ofstream out(path + ".tmp");
-  if (!out) return false;
-
-  for (auto& [k, v] : map_) {
-    out << k << '\t' << v << '\n';
-  }
-
-  out.close();
-
-  // atomic replace
-  std::rename((path + ".tmp").c_str(), path.c_str());
-
-  return true;
-}
 
 bool KVStore::checkpoint(const std::string& snapshot_path,
                          const std::string& wal_path) {
@@ -194,6 +216,16 @@ void KVStore::apply_del_no_log_unlocked(const std::string& key) {
 bool KVStore::flush_wal() {
   std::unique_lock lock(mu_);
   return wal_.flush();
+}
+
+void KVStore::ApplyPut(std::string key, std::string value) {
+  std::unique_lock lock(mu_);
+  map_[std::move(key)] = std::move(value);
+}
+
+void KVStore::ApplyDel(const std::string& key) {
+  std::unique_lock lock(mu_);
+  map_.erase(key);
 }
 
 } // namespace kv

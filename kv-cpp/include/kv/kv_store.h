@@ -7,10 +7,11 @@
 #include <iostream>
 
 #include "kv/wal.h"
+#include "kv/raft_sm.h"
 
 namespace kv {
 
-class KVStore {
+class KVStore : public IRaftStateMachine{
 public:
   // v0.2: must be called before PUT/DEL for WAL + recovery
   bool open(const std::string& wal_path);
@@ -31,10 +32,15 @@ public:
   bool flush_wal();
   void set_group_commit_every(int n) ;
 
+  // Raft state machine apply (must NOT append to WAL)
+  void ApplyPut(std::string key, std::string value) override;
+  void ApplyDel(const std::string& key) override;
+
 private:
   friend class Wal;
   bool load_from_file_unlocked(const std::string& path);
   bool save_to_file_unlocked(const std::string& path) const;
+  int group_commit_every_ = 5;
 
   
 
