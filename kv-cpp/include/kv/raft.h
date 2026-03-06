@@ -9,6 +9,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <unordered_map>
 
 #include "kv/raft_sm.h"
 
@@ -75,6 +76,10 @@ class RaftNode {
   RequestVoteResp OnRequestVote(const RequestVoteReq& req);
   AppendEntriesResp OnAppendEntries(const AppendEntriesReq& req);
 
+  // Replication state (leader only)
+  std::unordered_map<int, uint64_t> next_index_;   // next log index to send to follower
+  std::unordered_map<int, uint64_t> match_index_;  // highest replicated index on follower
+
   // Observability
   int id() const { return id_; }
   RaftRole role() const { return role_; }
@@ -104,7 +109,10 @@ class RaftNode {
     return log_[static_cast<size_t>(idx - 1)].term;
   }
 
+  void AdvanceCommitIndexLocked();
+
   bool IsLeaderLocked() const { return role_ == RaftRole::Leader; }
+  AppendEntriesReq BuildAppendEntriesLocked(int peer_id) const;
 
  private:
   const int id_;

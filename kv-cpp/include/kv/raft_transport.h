@@ -10,6 +10,7 @@ namespace kv {
 class InProcessTransport : public IRaftTransport {
  public:
   void Register(RaftNode* node);
+  void Unregister(int id);
 
   RequestVoteResp RequestVote(int peer_id, const RequestVoteReq& req) override;
   AppendEntriesResp AppendEntries(int peer_id, const AppendEntriesReq& req) override;

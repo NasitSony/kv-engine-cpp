@@ -1,6 +1,7 @@
 #include "kv/raft.h"
 
 #include <iostream>
+#include <algorithm>
 
 namespace kv {
 
@@ -53,6 +54,28 @@ bool RaftNode::IsUpToDateLocked(uint64_t cand_last_idx, uint64_t cand_last_term)
   return cand_last_idx >= my_idx;
 }
 
+void RaftNode::AdvanceCommitIndexLocked() {
+  std::vector<uint64_t> match_values;
+  match_values.push_back(LastLogIndexLocked()); // leader itself
+
+  for (const auto& kv : match_index_) {
+    match_values.push_back(kv.second);
+  }
+
+  std::sort(match_values.begin(), match_values.end());
+
+  // majority position
+  uint64_t N = match_values[match_values.size() / 2];
+
+  if (N > commit_index_) {
+    // Raft rule: only commit entries from current term
+    if (TermAtLocked(N) == current_term_) {
+      commit_index_ = N;
+      std::cerr << "[raft] commit_index -> " << commit_index_ << "\n";
+    }
+  }
+}
+
 void RaftNode::BecomeFollowerLocked(uint64_t new_term, std::optional<int> leader) {
   role_ = RaftRole::Follower;
   leader_id_ = leader;
@@ -75,6 +98,39 @@ void RaftNode::BecomeLeaderLocked() {
   role_ = RaftRole::Leader;
   leader_id_ = id_;
   std::cerr << "[raft] node " << id_ << " became LEADER term=" << current_term_ << "\n";
+
+  uint64_t last = LastLogIndexLocked();
+  for (int p : peers_) {
+    next_index_[p] = last + 1;   // start sending from end
+    match_index_[p] = 0;         // nothing replicated yet
+  }
+  std::cerr << "[raft] init next_index for " << peers_.size() << " peers\n";
+}
+
+
+AppendEntriesReq RaftNode::BuildAppendEntriesLocked(int peer_id) const {
+  AppendEntriesReq req;
+  req.term = current_term_;
+  req.leader_id = id_;
+  req.leader_commit = commit_index_;
+
+  uint64_t next = 1;
+  auto it = next_index_.find(peer_id);
+  if (it != next_index_.end()) {
+    next = it->second;
+  }
+
+  req.prev_log_index = (next == 0 || next == 1) ? 0 : (next - 1);
+  req.prev_log_term = TermAtLocked(req.prev_log_index);
+
+  // send suffix [next .. end]
+  if (next >= 1 && next <= log_.size()) {
+    for (size_t i = static_cast<size_t>(next - 1); i < log_.size(); ++i) {
+      req.entries.push_back(log_[i]);
+    }
+  }
+
+  return req;
 }
 
 // ---------------- RPC handlers ----------------
@@ -213,13 +269,7 @@ bool RaftNode::ProposePut(std::string key, std::string value) {
 
   if (acks < needed) return false;
 
-  // Commit locally
-  {
-    std::lock_guard<std::mutex> g(mu_);
-    if (!IsLeaderLocked()) return false;
-    commit_index_ = std::max(commit_index_, my_index);
-  }
-
+  
   // Send commit index via heartbeat
   AppendEntriesReq hb;
   {
@@ -295,10 +345,7 @@ bool RaftNode::ProposeDel(std::string key) {
 
   if (acks < needed) return false;
 
-  {
-    std::lock_guard<std::mutex> g(mu_);
-    commit_index_ = std::max(commit_index_, my_index);
-  }
+
 
   AppendEntriesReq hb;
   {
@@ -389,45 +436,60 @@ void RaftNode::ElectionLoop() {
     }
   }
 }
+
 void RaftNode::HeartbeatLoop() {
   while (running_.load()) {
     std::this_thread::sleep_for(kHeartbeatInterval);
 
-    AppendEntriesReq hb;
     std::vector<int> peers_copy;
 
     {
       std::lock_guard<std::mutex> g(mu_);
       if (role_ != RaftRole::Leader) continue;
-
-      hb.term = current_term_;
-      hb.leader_id = id_;
-
-      // ✅ Demo/simple catch-up: always start from scratch
-      hb.prev_log_index = 0;
-      hb.prev_log_term = 0;
-
-      // ✅ Send the full log every heartbeat (not efficient, but deterministic)
-      hb.entries = log_;
-
-      // Tell followers what is committed
-      hb.leader_commit = commit_index_;
-
       peers_copy = peers_;
     }
 
     for (int p : peers_copy) {
-      AppendEntriesResp resp = transport_->AppendEntries(p, hb);
+      AppendEntriesReq req;
+      {
+        std::lock_guard<std::mutex> g(mu_);
+        if (role_ != RaftRole::Leader) break;
+        req = BuildAppendEntriesLocked(p);
+      }
+
+      AppendEntriesResp resp = transport_->AppendEntries(p, req);
 
       std::lock_guard<std::mutex> g(mu_);
       if (resp.term > current_term_) {
         BecomeFollowerLocked(resp.term, std::nullopt);
         break;
       }
+
+      // For now: only handle success path
+      if (resp.success) {
+        if (!req.entries.empty()) {
+          uint64_t sent_last = req.prev_log_index + req.entries.size();
+          match_index_[p] = sent_last;
+          next_index_[p] = sent_last + 1;
+        }
+        AdvanceCommitIndexLocked();
+        std::cerr << "[raft] peer " << p
+          << " match=" << match_index_[p]
+          << " next=" << next_index_[p] << "\n";
+      }else {
+        // ❌ Follower rejected AppendEntries
+        // Move nextIndex back and retry later
+        auto it = next_index_.find(p);
+        if (it != next_index_.end() && it->second > 1) {
+           //it->second -= 1;
+           it->second = std::max<uint64_t>(1, it->second - 1);
+        }
+             std::cerr << "[raft] backtrack peer " << p
+              << " next=" << next_index_[p] << "\n";
+}
     }
   }
 }
-
 void RaftNode::ApplyLoop() {
   while (running_.load()) {
     std::this_thread::sleep_for(kApplyPoll);
