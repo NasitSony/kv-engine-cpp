@@ -22,3 +22,20 @@ add_executable(raft_demo
   src/raft_demo.cpp
 )
 target_link_libraries(raft_demo PRIVATE kv_store)
+
+add_executable(kv_server
+  src/server_main.cpp
+)
+
+target_link_libraries(kv_server PRIVATE kv_store)
+
+add_executable(kv_cluster_demo
+  src/cluster_demo.cpp
+)
+
+target_link_libraries(kv_cluster_demo PRIVATE kv_store)
+
+
+add_executable(kv_client
+  src/kv_client.cpp
+)
