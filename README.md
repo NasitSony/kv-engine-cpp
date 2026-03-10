@@ -40,9 +40,9 @@ This project implements these core primitives from first principles, mirroring t
 By focusing on real failure scenarios (crashes, partial writes, corruption), this system demonstrates how correctness and durability are enforced in production backends, forming the basis for replication, consensus, and fault-tolerant distributed systems.
 
 
-## 🚀 Current Version: v0.4
+## 🚀 Current Version: v0.5
 
-WAL • Crash Recovery • Snapshots • Group Commit
+WAL • Crash Recovery • Snapshots • Group Commit • Raft-based Replication
 
 ---
 
@@ -122,6 +122,7 @@ If a write returns OK, it survives crashes.
 - Reduced fsync frequency
 - Lock contention reduction
 - Maintains durability while improving throughput
+
 
 **✅ v0.5 — Raft Consensus Replication**
 
