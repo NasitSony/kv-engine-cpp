@@ -1,20 +1,50 @@
 # kv-engine-cpp
 
-A correctness-first key–value storage engine built in C++, focusing on durability, crash recovery, and failure-aware system design.
+A crash-consistent key–value storage engine in C++ implementing write-ahead logging (WAL), group commit, and deterministic recovery. Designed with a correctness-first approach, the system focuses on durability guarantees, failure handling, and reliable state reconstruction under crash scenarios.
 
-This project explores how real storage systems behave under failure, starting from first principles and evolving toward distributed and fault-tolerant systems.
-
+Inspired by real-world storage systems such as RocksDB and etcd, this project explores how core storage primitives evolve toward distributed and fault-tolerant systems.
 ---
 
-## 🚀 Current Version: v0.4  
-**WAL + Crash Recovery + Snapshots + Group Commit**
+
+## ⚡ Key Results
+
+- Ensures **crash-consistent recovery** with zero data loss up to the last durability boundary (`fsync` / `FLUSH`)
+- Implements **group commit batching**, improving write throughput by ~2.7× compared to flush-per-write
+- Achieves **deterministic recovery**, guaranteeing identical state reconstruction via WAL replay
+- Detects and safely ignores **partial or corrupted WAL records** using CRC validation
+- Reduces recovery time via **snapshot-based checkpointing**, avoiding full log replay
+
+## 📊 Performance Snapshot (Group Commit vs Immediate Flush)
+
+**Workload:** 10,000 sequential `PUT`s + final `FLUSH` (local disk)
+
+|      Mode       |    Setting   | total_ms |   ops/sec      |
+|-----------------|-------------:|---------:|---------------:|
+| Immediate flush | `SETBATCH 1` |  255 ms  |  39,216 ops/s  |
+| Group commit    | `SETBATCH 5` |  96 ms   | 104,167 ops/s  |
+
+**Result:** Group commit improves write throughput by ~**2.66×** by batching WAL flushes (reducing flush frequency compared to flushing every write).
+
+
+## 🏭 Why This Matters (Industry Context)
+
+Modern storage and distributed systems rely on strong durability and recovery guarantees. Databases, stream processors, and consensus systems depend on write-ahead logging (WAL), crash consistency, and deterministic state reconstruction to maintain correctness under failures.
+
+This project implements these core primitives from first principles, mirroring the foundations of production systems such as RocksDB, etcd, and distributed databases. WAL, batching (group commit), snapshotting, and recovery form the backbone of reliable data infrastructure.
+
+By focusing on real failure scenarios (crashes, partial writes, corruption), this system demonstrates how correctness and durability are enforced in production backends, forming the basis for replication, consensus, and fault-tolerant distributed systems.
+
+
+## 🚀 Current Version: v0.4
+
+WAL • Crash Recovery • Snapshots • Group Commit
 
 ---
 
 ## ✅ Guarantees
 
 ### Crash Consistency
-After a crash, the system recovers to the last valid state using snapshot + WAL replay.
+After a crash, the system recovers to the last valid durable state using snapshot + WAL replay.
 
 ### Deterministic Recovery
 Replaying the same WAL produces the same state.
@@ -116,6 +146,24 @@ GET x   # 100
 GET y   # 200
 ```
 
+## 📊 Performance Benchmark Demo
+
+Run benchmark with different durability settings:
+
+### Immediate flush (no batching)
+```bash
+./build/kv_cli
+SETBATCH 1
+BENCH 10000
+```
+
+### Group commit (batched flush)
+```bash
+./build/kv_cli
+SETBATCH 5
+BENCH 10000
+```
+
 📁 Storage Files
 - WAL: /tmp/kv.wal
 - Snapshot: /tmp/kv.snapshot
@@ -162,13 +210,6 @@ It is about understanding:
 - Deterministic recovery
 - Storage → distributed systems connection
 
-🧠 Why This Matters
-
-Modern systems depend on:
-- Reliable persistence
-- Correct recovery after crashes
-- Deterministic state reconstruction
-- This project builds those foundations step by step.
 
 
 🔧 Future Directions
