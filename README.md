@@ -208,8 +208,20 @@ FLUSH
 EXIT
 ```
 
-## 🌐 Distributed Demo
-**Start Raft cluster demo**
+## 🌐 Raft Replication Demo
+
+This demo shows leader election, log replication, and fault-tolerant recovery using a 3-node Raft cluster.
+
+**Features Demonstrated**
+
+- Automatic leader election
+- Strong consistency via majority commit
+- Log replication across nodes
+- Leader crash and re-election
+- Follower log catch-up after restart
+- Client redirection to active leader
+
+**Run Raft Simulation**
 
 ```bash
 ./build/raft_demo
@@ -217,12 +229,26 @@ EXIT
 **Example Output**
 
 ```bash
+[raft] node 3 became LEADER term=1
 Leader is node 3
 ProposePut(a=100) -> true
 s1.get(a)=100
 s2.get(a)=100
 s3.get(a)=100
+
+=== Simulating leader crash ===
+[raft] node 2 became LEADER term=2
+New leader is node 2
+ProposePut(b=200) -> true
+s1.get(b)=200
+s2.get(b)=200
+s3.get(b)=200
 ```
+This demonstrates Raft’s guarantees of:
+- Leader-based coordination
+- Majority-based commit
+- Safety under node failures
+- Deterministic state convergence
 
 ## 💥 Crash Recovery Demo
 
