@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk -mmacosx-version-min=15.3 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/kv_client.dir/src/kv_client.cpp.o -o kv_client 
