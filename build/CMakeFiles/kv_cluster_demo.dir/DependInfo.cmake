@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/nasit/dev/kv-engine-cpp/kv-cpp/src/cluster_demo.cpp" "CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o" "gcc" "CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o.d"
+  "/Users/nasit/dev/kv-engine-cpp/src/cluster_demo.cpp" "CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o" "gcc" "CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles/kv_store.dir/DependInfo.cmake"
+  "/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/kv_store.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

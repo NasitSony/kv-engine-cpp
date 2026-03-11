@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/kv_store.dir/src/kv_store.cpp.o"
   "CMakeFiles/kv_store.dir/src/kv_store.cpp.o.d"
+  "CMakeFiles/kv_store.dir/src/object_store.cpp.o"
+  "CMakeFiles/kv_store.dir/src/object_store.cpp.o.d"
   "CMakeFiles/kv_store.dir/src/raft.cpp.o"
   "CMakeFiles/kv_store.dir/src/raft.cpp.o.d"
   "CMakeFiles/kv_store.dir/src/raft_transport.cpp.o"

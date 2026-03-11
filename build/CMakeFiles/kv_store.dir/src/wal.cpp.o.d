@@ -1,6 +1,6 @@
 CMakeFiles/kv_store.dir/src/wal.cpp.o: \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/src/wal.cpp \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/wal.h \
+  /Users/nasit/dev/kv-engine-cpp/src/wal.cpp \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/wal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/cstdint \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__config_site \
@@ -932,9 +932,9 @@ CMakeFiles/kv_store.dir/src/wal.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/stack \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/unistd.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/kv_store.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/kv_store.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/shared_mutex \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft_sm.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft_sm.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/sys/unistd.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/sys/_types/_posix_vdisable.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/sys/select.h \

@@ -1,6 +1,6 @@
 CMakeFiles/kv_store.dir/src/kv_store.cpp.o: \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/src/kv_store.cpp \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/kv_store.h \
+  /Users/nasit/dev/kv-engine-cpp/src/kv_store.cpp \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/kv_store.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/optional \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__assertion_handler \
@@ -933,8 +933,8 @@ CMakeFiles/kv_store.dir/src/kv_store.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/stack \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/unistd.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/wal.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft_sm.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/wal.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft_sm.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/filesystem \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__filesystem/copy_options.h \

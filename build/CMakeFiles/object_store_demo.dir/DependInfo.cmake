@@ -8,11 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/nasit/dev/kv-engine-cpp/src/kv_client.cpp" "CMakeFiles/kv_client.dir/src/kv_client.cpp.o" "gcc" "CMakeFiles/kv_client.dir/src/kv_client.cpp.o.d"
+  "/Users/nasit/dev/kv-engine-cpp/src/object_store_demo.cpp" "CMakeFiles/object_store_demo.dir/src/object_store_demo.cpp.o" "gcc" "CMakeFiles/object_store_demo.dir/src/object_store_demo.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/kv_store.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

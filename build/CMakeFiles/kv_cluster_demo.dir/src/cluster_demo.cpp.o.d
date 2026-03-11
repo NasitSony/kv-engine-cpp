@@ -1,6 +1,6 @@
 CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o: \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/src/cluster_demo.cpp \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/kv_store.h \
+  /Users/nasit/dev/kv-engine-cpp/src/cluster_demo.cpp \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/kv_store.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/optional \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__assertion_handler \
@@ -933,9 +933,9 @@ CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/stack \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/unistd.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/wal.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft_sm.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/wal.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft_sm.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/chrono \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__chrono/file_clock.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__chrono/calendar.h \
@@ -1028,7 +1028,7 @@ CMakeFiles/kv_cluster_demo.dir/src/cluster_demo.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__stop_token/stop_token.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__thread/thread.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__thread/this_thread.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft_transport.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft_transport.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/arpa/inet.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/netinet/in.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/sys/socket.h \

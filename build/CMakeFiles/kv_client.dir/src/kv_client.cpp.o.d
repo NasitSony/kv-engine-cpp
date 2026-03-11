@@ -1,5 +1,5 @@
 CMakeFiles/kv_client.dir/src/kv_client.cpp.o: \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/src/kv_client.cpp \
+  /Users/nasit/dev/kv-engine-cpp/src/kv_client.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/arpa/inet.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/_bounds.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/sys/cdefs.h \

@@ -1,6 +1,6 @@
 CMakeFiles/kv_store.dir/src/raft.cpp.o: \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/src/raft.cpp \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft.h \
+  /Users/nasit/dev/kv-engine-cpp/src/raft.cpp \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/atomic \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__config_site \
@@ -1023,5 +1023,5 @@ CMakeFiles/kv_store.dir/src/raft.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__stop_token/stop_token.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__thread/thread.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/__thread/this_thread.h \
-  /Users/nasit/dev/kv-engine-cpp/kv-cpp/include/kv/raft_sm.h \
+  /Users/nasit/dev/kv-engine-cpp/include/kv/raft_sm.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk/usr/include/c++/v1/iostream

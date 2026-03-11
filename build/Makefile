@@ -57,10 +57,10 @@ RM = /opt/homebrew/Cellar/cmake/3.24.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/nasit/dev/kv-engine-cpp/kv-cpp
+CMAKE_SOURCE_DIR = /Users/nasit/dev/kv-engine-cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/nasit/dev/kv-engine-cpp/kv-cpp/build
+CMAKE_BINARY_DIR = /Users/nasit/dev/kv-engine-cpp/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles /Users/nasit/dev/kv-engine-cpp/kv-cpp/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles /Users/nasit/dev/kv-engine-cpp/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -194,6 +194,19 @@ kv_client/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_client.dir/build.make CMakeFiles/kv_client.dir/build
 .PHONY : kv_client/fast
 
+#=============================================================================
+# Target rules for targets named object_store_demo
+
+# Build rule for target.
+object_store_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 object_store_demo
+.PHONY : object_store_demo
+
+# fast build rule for target.
+object_store_demo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/build
+.PHONY : object_store_demo/fast
+
 src/cluster_demo.o: src/cluster_demo.cpp.o
 .PHONY : src/cluster_demo.o
 
@@ -289,6 +302,54 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_cli.dir/build.make CMakeFiles/kv_cli.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/object_store.o: src/object_store.cpp.o
+.PHONY : src/object_store.o
+
+# target to build an object file
+src/object_store.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_store.dir/build.make CMakeFiles/kv_store.dir/src/object_store.cpp.o
+.PHONY : src/object_store.cpp.o
+
+src/object_store.i: src/object_store.cpp.i
+.PHONY : src/object_store.i
+
+# target to preprocess a source file
+src/object_store.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_store.dir/build.make CMakeFiles/kv_store.dir/src/object_store.cpp.i
+.PHONY : src/object_store.cpp.i
+
+src/object_store.s: src/object_store.cpp.s
+.PHONY : src/object_store.s
+
+# target to generate assembly for a file
+src/object_store.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_store.dir/build.make CMakeFiles/kv_store.dir/src/object_store.cpp.s
+.PHONY : src/object_store.cpp.s
+
+src/object_store_demo.o: src/object_store_demo.cpp.o
+.PHONY : src/object_store_demo.o
+
+# target to build an object file
+src/object_store_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/src/object_store_demo.cpp.o
+.PHONY : src/object_store_demo.cpp.o
+
+src/object_store_demo.i: src/object_store_demo.cpp.i
+.PHONY : src/object_store_demo.i
+
+# target to preprocess a source file
+src/object_store_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/src/object_store_demo.cpp.i
+.PHONY : src/object_store_demo.cpp.i
+
+src/object_store_demo.s: src/object_store_demo.cpp.s
+.PHONY : src/object_store_demo.s
+
+# target to generate assembly for a file
+src/object_store_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/src/object_store_demo.cpp.s
+.PHONY : src/object_store_demo.cpp.s
 
 src/raft.o: src/raft.cpp.o
 .PHONY : src/raft.o
@@ -423,6 +484,7 @@ help:
 	@echo "... kv_cluster_demo"
 	@echo "... kv_server"
 	@echo "... kv_store"
+	@echo "... object_store_demo"
 	@echo "... raft_demo"
 	@echo "... src/cluster_demo.o"
 	@echo "... src/cluster_demo.i"
@@ -436,6 +498,12 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/object_store.o"
+	@echo "... src/object_store.i"
+	@echo "... src/object_store.s"
+	@echo "... src/object_store_demo.o"
+	@echo "... src/object_store_demo.i"
+	@echo "... src/object_store_demo.s"
 	@echo "... src/raft.o"
 	@echo "... src/raft.i"
 	@echo "... src/raft.s"

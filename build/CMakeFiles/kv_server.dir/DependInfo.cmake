@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/nasit/dev/kv-engine-cpp/kv-cpp/src/server_main.cpp" "CMakeFiles/kv_server.dir/src/server_main.cpp.o" "gcc" "CMakeFiles/kv_server.dir/src/server_main.cpp.o.d"
+  "/Users/nasit/dev/kv-engine-cpp/src/server_main.cpp" "CMakeFiles/kv_server.dir/src/server_main.cpp.o" "gcc" "CMakeFiles/kv_server.dir/src/server_main.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles/kv_store.dir/DependInfo.cmake"
+  "/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/kv_store.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

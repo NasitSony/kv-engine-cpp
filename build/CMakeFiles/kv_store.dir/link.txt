@@ -1,2 +1,2 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libkv_store.a CMakeFiles/kv_store.dir/src/kv_store.cpp.o CMakeFiles/kv_store.dir/src/wal.cpp.o CMakeFiles/kv_store.dir/src/raft.cpp.o CMakeFiles/kv_store.dir/src/raft_transport.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ar qc libkv_store.a CMakeFiles/kv_store.dir/src/kv_store.cpp.o CMakeFiles/kv_store.dir/src/wal.cpp.o CMakeFiles/kv_store.dir/src/raft.cpp.o CMakeFiles/kv_store.dir/src/raft_transport.cpp.o CMakeFiles/kv_store.dir/src/object_store.cpp.o
 /Library/Developer/CommandLineTools/usr/bin/ranlib libkv_store.a

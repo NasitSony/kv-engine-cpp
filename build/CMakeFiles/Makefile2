@@ -54,10 +54,10 @@ RM = /opt/homebrew/Cellar/cmake/3.24.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/nasit/dev/kv-engine-cpp/kv-cpp
+CMAKE_SOURCE_DIR = /Users/nasit/dev/kv-engine-cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/nasit/dev/kv-engine-cpp/kv-cpp/build
+CMAKE_BINARY_DIR = /Users/nasit/dev/kv-engine-cpp/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -69,6 +69,7 @@ all: CMakeFiles/raft_demo.dir/all
 all: CMakeFiles/kv_server.dir/all
 all: CMakeFiles/kv_cluster_demo.dir/all
 all: CMakeFiles/kv_client.dir/all
+all: CMakeFiles/object_store_demo.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -82,6 +83,7 @@ clean: CMakeFiles/raft_demo.dir/clean
 clean: CMakeFiles/kv_server.dir/clean
 clean: CMakeFiles/kv_cluster_demo.dir/clean
 clean: CMakeFiles/kv_client.dir/clean
+clean: CMakeFiles/object_store_demo.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -91,14 +93,14 @@ clean: CMakeFiles/kv_client.dir/clean
 CMakeFiles/kv_store.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_store.dir/build.make CMakeFiles/kv_store.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_store.dir/build.make CMakeFiles/kv_store.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles --progress-num=9,10,11,12,13 "Built target kv_store"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=9,10,11,12,13,14 "Built target kv_store"
 .PHONY : CMakeFiles/kv_store.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/kv_store.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/kv_store.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/kv_store.dir/rule
 
 # Convenience name for target.
@@ -117,14 +119,14 @@ CMakeFiles/kv_store.dir/clean:
 CMakeFiles/kv_cli.dir/all: CMakeFiles/kv_store.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_cli.dir/build.make CMakeFiles/kv_cli.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_cli.dir/build.make CMakeFiles/kv_cli.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles --progress-num=1,2 "Built target kv_cli"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=1,2 "Built target kv_cli"
 .PHONY : CMakeFiles/kv_cli.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/kv_cli.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/kv_cli.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/kv_cli.dir/rule
 
 # Convenience name for target.
@@ -143,14 +145,14 @@ CMakeFiles/kv_cli.dir/clean:
 CMakeFiles/raft_demo.dir/all: CMakeFiles/kv_store.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raft_demo.dir/build.make CMakeFiles/raft_demo.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raft_demo.dir/build.make CMakeFiles/raft_demo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles --progress-num=14,15 "Built target raft_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=17,18 "Built target raft_demo"
 .PHONY : CMakeFiles/raft_demo.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/raft_demo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/raft_demo.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/raft_demo.dir/rule
 
 # Convenience name for target.
@@ -169,14 +171,14 @@ CMakeFiles/raft_demo.dir/clean:
 CMakeFiles/kv_server.dir/all: CMakeFiles/kv_store.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_server.dir/build.make CMakeFiles/kv_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_server.dir/build.make CMakeFiles/kv_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles --progress-num=7,8 "Built target kv_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=7,8 "Built target kv_server"
 .PHONY : CMakeFiles/kv_server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/kv_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/kv_server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/kv_server.dir/rule
 
 # Convenience name for target.
@@ -195,14 +197,14 @@ CMakeFiles/kv_server.dir/clean:
 CMakeFiles/kv_cluster_demo.dir/all: CMakeFiles/kv_store.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_cluster_demo.dir/build.make CMakeFiles/kv_cluster_demo.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_cluster_demo.dir/build.make CMakeFiles/kv_cluster_demo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles --progress-num=5,6 "Built target kv_cluster_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=5,6 "Built target kv_cluster_demo"
 .PHONY : CMakeFiles/kv_cluster_demo.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/kv_cluster_demo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/kv_cluster_demo.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/kv_cluster_demo.dir/rule
 
 # Convenience name for target.
@@ -221,14 +223,14 @@ CMakeFiles/kv_cluster_demo.dir/clean:
 CMakeFiles/kv_client.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_client.dir/build.make CMakeFiles/kv_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_client.dir/build.make CMakeFiles/kv_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles --progress-num=3,4 "Built target kv_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=3,4 "Built target kv_client"
 .PHONY : CMakeFiles/kv_client.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/kv_client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/kv_client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/kv-cpp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/kv_client.dir/rule
 
 # Convenience name for target.
@@ -239,6 +241,32 @@ kv_client: CMakeFiles/kv_client.dir/rule
 CMakeFiles/kv_client.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kv_client.dir/build.make CMakeFiles/kv_client.dir/clean
 .PHONY : CMakeFiles/kv_client.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/object_store_demo.dir
+
+# All Build rule for target.
+CMakeFiles/object_store_demo.dir/all: CMakeFiles/kv_store.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles --progress-num=15,16 "Built target object_store_demo"
+.PHONY : CMakeFiles/object_store_demo.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/object_store_demo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/object_store_demo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles 0
+.PHONY : CMakeFiles/object_store_demo.dir/rule
+
+# Convenience name for target.
+object_store_demo: CMakeFiles/object_store_demo.dir/rule
+.PHONY : object_store_demo
+
+# clean rule for target.
+CMakeFiles/object_store_demo.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/clean
+.PHONY : CMakeFiles/object_store_demo.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
