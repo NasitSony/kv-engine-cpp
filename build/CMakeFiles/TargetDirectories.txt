@@ -5,5 +5,7 @@
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/kv_cluster_demo.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/kv_client.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_demo.dir
+/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_write_demo.dir
+/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_recover_demo.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/edit_cache.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/rebuild_cache.dir

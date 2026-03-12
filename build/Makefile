@@ -207,6 +207,32 @@ object_store_demo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/build
 .PHONY : object_store_demo/fast
 
+#=============================================================================
+# Target rules for targets named object_store_write_demo
+
+# Build rule for target.
+object_store_write_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 object_store_write_demo
+.PHONY : object_store_write_demo
+
+# fast build rule for target.
+object_store_write_demo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_write_demo.dir/build.make CMakeFiles/object_store_write_demo.dir/build
+.PHONY : object_store_write_demo/fast
+
+#=============================================================================
+# Target rules for targets named object_store_recover_demo
+
+# Build rule for target.
+object_store_recover_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 object_store_recover_demo
+.PHONY : object_store_recover_demo
+
+# fast build rule for target.
+object_store_recover_demo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_recover_demo.dir/build.make CMakeFiles/object_store_recover_demo.dir/build
+.PHONY : object_store_recover_demo/fast
+
 src/cluster_demo.o: src/cluster_demo.cpp.o
 .PHONY : src/cluster_demo.o
 
@@ -351,6 +377,54 @@ src/object_store_demo.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_demo.dir/build.make CMakeFiles/object_store_demo.dir/src/object_store_demo.cpp.s
 .PHONY : src/object_store_demo.cpp.s
 
+src/object_store_recover_demo.o: src/object_store_recover_demo.cpp.o
+.PHONY : src/object_store_recover_demo.o
+
+# target to build an object file
+src/object_store_recover_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_recover_demo.dir/build.make CMakeFiles/object_store_recover_demo.dir/src/object_store_recover_demo.cpp.o
+.PHONY : src/object_store_recover_demo.cpp.o
+
+src/object_store_recover_demo.i: src/object_store_recover_demo.cpp.i
+.PHONY : src/object_store_recover_demo.i
+
+# target to preprocess a source file
+src/object_store_recover_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_recover_demo.dir/build.make CMakeFiles/object_store_recover_demo.dir/src/object_store_recover_demo.cpp.i
+.PHONY : src/object_store_recover_demo.cpp.i
+
+src/object_store_recover_demo.s: src/object_store_recover_demo.cpp.s
+.PHONY : src/object_store_recover_demo.s
+
+# target to generate assembly for a file
+src/object_store_recover_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_recover_demo.dir/build.make CMakeFiles/object_store_recover_demo.dir/src/object_store_recover_demo.cpp.s
+.PHONY : src/object_store_recover_demo.cpp.s
+
+src/object_store_write_demo.o: src/object_store_write_demo.cpp.o
+.PHONY : src/object_store_write_demo.o
+
+# target to build an object file
+src/object_store_write_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_write_demo.dir/build.make CMakeFiles/object_store_write_demo.dir/src/object_store_write_demo.cpp.o
+.PHONY : src/object_store_write_demo.cpp.o
+
+src/object_store_write_demo.i: src/object_store_write_demo.cpp.i
+.PHONY : src/object_store_write_demo.i
+
+# target to preprocess a source file
+src/object_store_write_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_write_demo.dir/build.make CMakeFiles/object_store_write_demo.dir/src/object_store_write_demo.cpp.i
+.PHONY : src/object_store_write_demo.cpp.i
+
+src/object_store_write_demo.s: src/object_store_write_demo.cpp.s
+.PHONY : src/object_store_write_demo.s
+
+# target to generate assembly for a file
+src/object_store_write_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/object_store_write_demo.dir/build.make CMakeFiles/object_store_write_demo.dir/src/object_store_write_demo.cpp.s
+.PHONY : src/object_store_write_demo.cpp.s
+
 src/raft.o: src/raft.cpp.o
 .PHONY : src/raft.o
 
@@ -485,6 +559,8 @@ help:
 	@echo "... kv_server"
 	@echo "... kv_store"
 	@echo "... object_store_demo"
+	@echo "... object_store_recover_demo"
+	@echo "... object_store_write_demo"
 	@echo "... raft_demo"
 	@echo "... src/cluster_demo.o"
 	@echo "... src/cluster_demo.i"
@@ -504,6 +580,12 @@ help:
 	@echo "... src/object_store_demo.o"
 	@echo "... src/object_store_demo.i"
 	@echo "... src/object_store_demo.s"
+	@echo "... src/object_store_recover_demo.o"
+	@echo "... src/object_store_recover_demo.i"
+	@echo "... src/object_store_recover_demo.s"
+	@echo "... src/object_store_write_demo.o"
+	@echo "... src/object_store_write_demo.i"
+	@echo "... src/object_store_write_demo.s"
 	@echo "... src/raft.o"
 	@echo "... src/raft.i"
 	@echo "... src/raft.s"
