@@ -138,27 +138,33 @@ Guarantee:
 Cluster remains consistent despite node failures.
 
 
-**✅  v0.6 — Mini Object Storage Layer**
+**✅ v0.6 — Mini Object Storage Layer**
 
-This version introduces a minimal object storage layer built on top of the WAL-backed KV engine.
-
-The object store provides a higher-level abstraction similar to cloud object storage systems, while reusing the durability and crash-recovery guarantees of the underlying storage engine.
-
-### Features
 - Bucket creation
 - Object PUT / GET / DELETE
 - Chunked storage for larger objects
 - Object metadata management
 - Logical delete via metadata state
-- Object reconstruction after restart
+- Object reconstruction after restart using the underlying WAL-backed KV engine
+
+Guarantee:  
+Committed objects remain recoverable after restart, inheriting the durability and crash-recovery semantics of the storage engine.
+
+### Object Write Commit Semantics
+Object writes follow a correctness-first design:
+
+1. Object data is split into chunks  
+2. Each chunk is written as a KV entry  
+3. Object metadata is written last and acts as the commit point  
+
+An object is considered valid only if committed metadata exists. During recovery, objects without committed metadata are ignored.
 
 ### Storage Layout
+- `bucket:<bucket-name>` → bucket metadata
+- `objmeta:<bucket>:<object-key>` → object metadata
+- `objchunk:<object-id>:<chunk-index>` → object chunk data
+- `bucketidx:<bucket>:<object-key>` → object index entry
 
-Objects are stored using the KV engine with the following key structure:
-bucket:<bucket-name> → bucket metadata
-objmeta:<bucket>:<object-key> → object metadata
-objchunk:<object-id>:<chunk-index> → object chunk data
-bucketidx:<bucket>:<object-key> → object index entry
 
 ## 🧪 Failure Scenarios Tested
 
@@ -298,7 +304,18 @@ GET x   # 100
 GET y   # 200
 ```
 
+### Object Storage Recovery Demo
 
+Write an object:
+
+```bash
+./build/object_store_write_demo
+```
+
+Recover after restart:
+```bash
+./build/object_store_recover_demo
+```
 
 ## 📊 Performance Benchmark Demo
 
@@ -329,6 +346,22 @@ BENCH 10000
 cmake -S . -B build
 cmake --build build
 ```
+
+
+### Object Write Commit Semantics
+
+Object writes follow a correctness-first design aligned with the WAL-based storage engine.
+
+Write path:
+
+1. Object data is split into chunks.
+2. Each chunk is written as a KV entry.
+3. Object metadata is written last and acts as the commit point.
+
+An object is considered valid only if committed metadata exists.  
+During recovery, objects without committed metadata are ignored.
+
+This ensures deterministic recovery consistent with the storage engine's durability guarantees.
 
 ## 🧠 What This Project Demonstrates
 
