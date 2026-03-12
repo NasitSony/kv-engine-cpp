@@ -137,6 +137,29 @@ If a write returns OK, it survives crashes.
 Guarantee:
 Cluster remains consistent despite node failures.
 
+
+**✅  v0.6 — Mini Object Storage Layer**
+
+This version introduces a minimal object storage layer built on top of the WAL-backed KV engine.
+
+The object store provides a higher-level abstraction similar to cloud object storage systems, while reusing the durability and crash-recovery guarantees of the underlying storage engine.
+
+### Features
+- Bucket creation
+- Object PUT / GET / DELETE
+- Chunked storage for larger objects
+- Object metadata management
+- Logical delete via metadata state
+- Object reconstruction after restart
+
+### Storage Layout
+
+Objects are stored using the KV engine with the following key structure:
+bucket:<bucket-name> → bucket metadata
+objmeta:<bucket>:<object-key> → object metadata
+objchunk:<object-id>:<chunk-index> → object chunk data
+bucketidx:<bucket>:<object-key> → object index entry
+
 ## 🧪 Failure Scenarios Tested
 
 ✔ Process crash (kill -9)
