@@ -206,7 +206,39 @@ Storage Index Layout
 ```
 
 
+✅ v0.8 — Overwrite Semantics + Garbage Collection
 
+- Object overwrite support for existing keys
+- Metadata replacement as the object commit boundary
+- Detection of superseded object versions
+- Garbage collection of orphaned object chunks
+- Lifecycle-safe object updates under crash recovery
+
+Guarantee:
+When an object key is overwritten, the new object becomes the authoritative version once its metadata is committed. Previous object data becomes unreachable and can be safely reclaimed by garbage collection.
+
+Object Overwrite Semantics
+
+When an object is written with an existing key:
+
+1. The new object data is chunked and written to storage
+2. A new object identifier is generated
+3. Object metadata is written last and becomes the commit point
+4. The bucket index entry is updated to reference the new object
+
+Any previous object chunks remain unreachable after the index update and are considered garbage.
+
+Garbage Collection
+
+Garbage collection identifies and removes object chunks that are no longer referenced by committed object metadata. This prevents storage growth from repeated overwrites.
+
+Storage Layout
+```bash
+bucket:<bucket-name> → bucket metadata  
+objmeta:<bucket>:<object-key> → object metadata (latest committed version)  
+objchunk:<object-id>:<chunk-index> → object chunk data  
+bucketidx:<bucket>:<object-key> → object index entry
+```
 
 ## 🧪 Failure Scenarios Tested
 
