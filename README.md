@@ -1,11 +1,11 @@
-## 🚀 kv-engine-cpp
-
-A correctness-first replicated key–value storage engine in C++
+## 🚀 durastore
+ 
+A correctness-first replicated storage system in C++
 
 This project builds a crash-consistent and replicated key–value storage engine from first principles.
 It focuses on **durability, deterministic recovery**, and **consensus-based replication** — the core foundations behind modern distributed databases and large-scale infrastructure systems.
 
-The system evolves step-by-step from a local storage engine to a replicated distributed service.
+The system evolves step-by-step from a local storage engine to a replicated distributed service, and further extends into a **metadata-driven object storage layer** built on top of the KV engine.
 ---
 
 ## ⚡ Key Results
@@ -17,7 +17,11 @@ The system evolves step-by-step from a local storage engine to a replicated dist
 - Reduces recovery time via **snapshot-based checkpointing**, eliminating the need for full log replay after crashes
 - Implements **Raft-based replicated state machine semantics**, enabling leader election, majority-based commit, and consistent log replication across nodes
 - Demonstrates **fault-tolerant failover and recovery**, including leader crash, re-election, follower catch-up, and client redirection to the active leader
-
+- Builds a **mini object storage layer** on top of the KV engine supporting bucket creation, chunked object storage, and metadata-based commit semantics
+- Implements **prefix-based object listing**, enabling hierarchical-style scans over object metadata indexes
+- Supports **safe object overwrite semantics**, where new metadata commits atomically replace previous object versions
+- Adds **mark-and-sweep garbage collection** to reclaim unreachable object chunks created by overwrites or deletes
+  
 
 ## 📊 Performance Snapshot (Group Commit vs Immediate Flush)
 
