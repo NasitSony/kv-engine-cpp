@@ -43,9 +43,9 @@ This project implements these core primitives from first principles, mirroring t
 By focusing on real failure scenarios (crashes, partial writes, corruption), this system demonstrates how correctness and durability are enforced in production backends, forming the basis for replication, consensus, and fault-tolerant distributed systems.
 
 
-## 🚀 Current Version: v0.5
+## 🚀 Current Version: v0.8
 
-WAL • Crash Recovery • Snapshots • Group Commit • Raft-based Replication
+WAL durability • Crash recovery • Raft replication • Object storage • Garbage collection
 
 ---
 
