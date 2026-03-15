@@ -71,26 +71,64 @@ Writes are **batched** and become durable on:
 
 ## 🧱 Architecture Overview
 
-**Single-Node Storage Engine**
-
-Client 
-  |
-KVStore (in-memory map)
-  |
-WAL (Write-Ahead Log, append-only)
-  |
-Disk
-
-  
-**Replicated Distributed Layer**
-
-Client
-  |
-Raft Leader
-  |
-Replicated Log
-  |
-State Machines (KVStore replicas)
+                     +----------------------+
+                     |        Client        |
+                     |   PUT / GET / DEL    |
+                     +----------+-----------+
+                                |
+                                v
+                    +-----------------------+
+                    |       KV Engine       |
+                    |  Thread-safe Map     |
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |   Write-Ahead Log     |
+                    |     Append-only       |
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |   Durability Layer    |
+                    |  fsync / Group Commit |
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |    Crash Recovery     |
+                    |      WAL Replay       |
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |  Snapshot & Compaction|
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |   Raft Replication    |
+                    | Leader / Quorum Commit|
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |   Object Storage      |
+                    | Buckets / Metadata    |
+                    | Chunked Object Data   |
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    |   Metadata Indexing   |
+                    | Prefix Scan / Listing |
+                    +----------+------------+
+                               |
+                               v
+                    +-----------------------+
+                    | Garbage Collection    |
+                    | Remove old chunks     |
+                    +-----------------------+
 
 ---
 
