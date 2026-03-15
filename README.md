@@ -1,5 +1,5 @@
-## 🚀 KV Shuttle
-A crash-consistent replicated storage system in C++
+## 🚀 VeriStore
+A correctness-first replicated storage system in C++
 
 This project builds a crash-consistent and replicated key–value storage engine from first principles.
 It focuses on **durability, deterministic recovery**, and **consensus-based replication** — the core foundations behind modern distributed databases and large-scale infrastructure systems.
