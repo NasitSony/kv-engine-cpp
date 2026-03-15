@@ -150,6 +150,20 @@ Cluster remains consistent despite node failures.
 Guarantee:  
 Committed objects remain recoverable after restart, inheriting the durability and crash-recovery semantics of the storage engine.
 
+### Object Write Commit Semantics
+Object writes follow a correctness-first design:
+
+1. Object data is split into chunks  
+2. Each chunk is written as a KV entry  
+3. Object metadata is written last and acts as the commit point  
+
+An object is considered valid only if committed metadata exists. During recovery, objects without committed metadata are ignored.
+
+### Storage Layout
+- `bucket:<bucket-name>` → bucket metadata
+- `objmeta:<bucket>:<object-key>` → object metadata
+- `objchunk:<object-id>:<chunk-index>` → object chunk data
+- `bucketidx:<bucket>:<object-key>` → object index entry
 
 **✅ v0.7 — Prefix Scan + ListObjects**
 
@@ -192,20 +206,6 @@ Storage Index Layout
 ```
 
 
-### Object Write Commit Semantics
-Object writes follow a correctness-first design:
-
-1. Object data is split into chunks  
-2. Each chunk is written as a KV entry  
-3. Object metadata is written last and acts as the commit point  
-
-An object is considered valid only if committed metadata exists. During recovery, objects without committed metadata are ignored.
-
-### Storage Layout
-- `bucket:<bucket-name>` → bucket metadata
-- `objmeta:<bucket>:<object-key>` → object metadata
-- `objchunk:<object-id>:<chunk-index>` → object chunk data
-- `bucketidx:<bucket>:<object-key>` → object index entry
 
 
 ## 🧪 Failure Scenarios Tested
