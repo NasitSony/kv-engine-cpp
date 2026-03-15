@@ -8,5 +8,6 @@
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_write_demo.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_recover_demo.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_list_demo.dir
+/Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/object_store_gc_demo.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/edit_cache.dir
 /Users/nasit/dev/kv-engine-cpp/build/CMakeFiles/rebuild_cache.dir

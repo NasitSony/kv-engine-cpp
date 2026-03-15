@@ -8,6 +8,9 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <set>
+#include <unordered_set>
+#include <string_view>
 
 #include "kv/object_store_key_codec.h"
 
@@ -164,6 +167,27 @@ PutObjectResult ObjectStore::PutObject(const PutObjectRequest& req) {
     result.error = "bucket does not exist";
     return result;
   }
+
+  // Detect overwrite of existing object
+  const auto existing_meta_raw =
+    kv_.get(ObjectStoreKeyCodec::ObjectMetaKey(req.bucket, req.key));
+
+  if (existing_meta_raw.has_value()) {
+    auto old_meta = deserialize_metadata(*existing_meta_raw);
+
+    if (old_meta.has_value() &&
+        old_meta->state != ObjectState::Deleted) {
+
+        std::cerr << "[overwrite] replacing object_id="
+                  << old_meta->object_id
+                  << " bucket=" << req.bucket
+                  << " key=" << req.key
+                  << "\n";
+
+        // Future improvement (v0.8 GC):
+        // old_meta->object_id will be used to reclaim old chunks
+    }
+}
 
   const ObjectId object_id = make_object_id(req.bucket, req.key);
   const std::uint64_t now_ms = now_epoch_ms();
@@ -355,6 +379,62 @@ ObjectStore::ListObjects(const BucketName& bucket,
   }
 
   return result;
+}
+
+std::size_t ObjectStore::GarbageCollectChunks() {
+  std::size_t deleted_chunks = 0;
+
+  // Step 1: collect reachable object_ids from committed metadata
+  std::unordered_set<std::string> reachable_object_ids;
+
+  const auto meta_keys = kv_.list_keys_with_prefix("objmeta:");
+
+  for (const auto& meta_key : meta_keys) {
+    const auto raw_meta = kv_.get(meta_key);
+
+    if (!raw_meta.has_value()) {
+      continue;
+    }
+
+    auto meta = deserialize_metadata(*raw_meta);
+
+    if (!meta.has_value()) {
+      continue;
+    }
+
+    if (meta->state == ObjectState::Committed) {
+      reachable_object_ids.insert(meta->object_id);
+    }
+  }
+
+  // Step 2: scan all chunk keys
+  const std::string prefix = "objchunk:";
+  const auto chunk_keys = kv_.list_keys_with_prefix(prefix);
+
+  for (const auto& chunk_key : chunk_keys) {
+    const std::size_t last_colon = chunk_key.rfind(':');
+
+    if (last_colon == std::string::npos ||
+        last_colon <= prefix.size()) {
+      continue;
+    }
+
+    std::string_view object_id_view(
+    chunk_key.data() + prefix.size(),
+    last_colon - prefix.size());
+
+    if (reachable_object_ids.find(std::string(object_id_view)) ==
+      reachable_object_ids.end()) {
+
+        if (kv_.del(chunk_key)) {
+          ++deleted_chunks;
+       }
+    }
+  }
+
+  kv_.flush_wal();
+
+  return deleted_chunks;
 }
 
 }  // namespace kv

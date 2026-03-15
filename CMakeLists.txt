@@ -63,3 +63,11 @@ add_executable(object_store_list_demo
 target_link_libraries(object_store_list_demo
   kv_store
 )
+
+add_executable(object_store_gc_demo
+  src/object_store_gc_demo.cpp
+)
+
+target_link_libraries(object_store_gc_demo
+  kv_store
+)

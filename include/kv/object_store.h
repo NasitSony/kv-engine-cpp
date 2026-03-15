@@ -21,6 +21,9 @@ class ObjectStore {
   ListObjectsResult ListObjects(const BucketName& bucket,
                                 const std::string& prefix = "");
 
+  // v0.8
+  std::size_t GarbageCollectChunks();                              
+
  private:
   KVStore& kv_;
   std::uint32_t chunk_size_bytes_{4096};
