@@ -150,6 +150,26 @@ Cluster remains consistent despite node failures.
 Guarantee:  
 Committed objects remain recoverable after restart, inheriting the durability and crash-recovery semantics of the storage engine.
 
+
+**✅ v0.7 — Prefix Scan + ListObjects**
+
+Adds prefix-based key scanning to the KV engine, enabling object listing
+operations in the object storage layer.
+
+Object listing works by scanning the bucket index namespace:
+
+  bucketidx:<bucket>:<object-key>
+
+ListObjects performs a prefix scan on this index and loads object metadata
+for each entry, skipping logically deleted objects.
+
+This enables operations similar to:
+
+  ListObjects(bucket)
+  ListObjects(bucket, prefix)
+
+providing deterministic lexicographic listing of objects within a bucket.
+
 ### Object Write Commit Semantics
 Object writes follow a correctness-first design:
 
