@@ -163,8 +163,9 @@ Guarantee:
 - Object listings reflect the committed metadata state of the system. Only objects with valid committed metadata entries are returned during listing.
 - Object Listing Semantics
 - Object listing works by scanning the bucket index namespace:
-
+```bash
 bucketidx:<bucket>:<object-key>
+```
 
 The KV engine performs a prefix scan over this namespace to retrieve
 matching object keys. For each entry:
@@ -183,10 +184,12 @@ This enables operations equivalent to:
 - ListObjects(bucket, prefix)
 
 Storage Index Layout
+```bash
 - bucket:<bucket-name> → bucket metadata  
 - objmeta:<bucket>:<object-key> → object metadata  
 - objchunk:<object-id>:<chunk-index> → object data chunks  
 - bucketidx:<bucket>:<object-key> → object index entry used for prefix scans
+```
 
 
 ### Object Write Commit Semantics
