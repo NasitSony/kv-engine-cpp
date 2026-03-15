@@ -153,22 +153,41 @@ Committed objects remain recoverable after restart, inheriting the durability an
 
 **✅ v0.7 — Prefix Scan + ListObjects**
 
-Adds prefix-based key scanning to the KV engine, enabling object listing
-operations in the object storage layer.
+- Prefix-based key scanning in the KV engine
+- Bucket object listing via metadata index
+- Prefix filtering support for hierarchical-style paths
+- Deterministic lexicographic listing order
+- Logical delete filtering during listing
 
-Object listing works by scanning the bucket index namespace:
+Guarantee:
+- Object listings reflect the committed metadata state of the system. Only objects with valid committed metadata entries are returned during listing.
+- Object Listing Semantics
+- Object listing works by scanning the bucket index namespace:
 
-  bucketidx:<bucket>:<object-key>
+bucketidx:<bucket>:<object-key>
 
-ListObjects performs a prefix scan on this index and loads object metadata
-for each entry, skipping logically deleted objects.
+The KV engine performs a prefix scan over this namespace to retrieve
+matching object keys. For each entry:
 
-This enables operations similar to:
+1. The object key is extracted from the index entry
+2. Object metadata is loaded from:
+   ```bash
+   objmeta:<bucket>:<object-key>
+   ```
 
-  ListObjects(bucket)
-  ListObjects(bucket, prefix)
+3. Deleted objects are filtered out
+4. Remaining objects are returned in lexicographic order
 
-providing deterministic lexicographic listing of objects within a bucket.
+This enables operations equivalent to:
+- ListObjects(bucket)
+- ListObjects(bucket, prefix)
+
+Storage Index Layout
+- bucket:<bucket-name> → bucket metadata  
+- objmeta:<bucket>:<object-key> → object metadata  
+- objchunk:<object-id>:<chunk-index> → object data chunks  
+- bucketidx:<bucket>:<object-key> → object index entry used for prefix scans
+
 
 ### Object Write Commit Semantics
 Object writes follow a correctness-first design:
