@@ -30,6 +30,12 @@ public:
                 const std::string& wal_path);
   
   bool flush_wal();
+
+  // v0.7 prefix scan API
+  std::vector<std::string>
+  list_keys_with_prefix(const std::string& prefix) const;
+
+
   void set_group_commit_every(int n) ;
 
   // Raft state machine apply (must NOT append to WAL)

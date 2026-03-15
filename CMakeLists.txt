@@ -55,3 +55,11 @@ add_executable(object_store_recover_demo
   src/object_store_recover_demo.cpp
 )
 target_link_libraries(object_store_recover_demo PRIVATE kv_store)
+
+add_executable(object_store_list_demo
+  src/object_store_list_demo.cpp
+)
+
+target_link_libraries(object_store_list_demo
+  kv_store
+)

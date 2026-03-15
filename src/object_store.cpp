@@ -294,11 +294,66 @@ DeleteObjectResult ObjectStore::DeleteObject(const BucketName& bucket, const Obj
   return result;
 }
 
-ListObjectsResult ObjectStore::ListObjects(const BucketName&,
-                                           const std::string&) {
+ListObjectsResult
+ObjectStore::ListObjects(const BucketName& bucket,
+                         const std::string& prefix) {
   ListObjectsResult result;
-  result.ok = false;
-  result.error = "ListObjects not implemented with current KVStore API (needs prefix scan)";
+  result.ok = true;
+
+  if (bucket.empty()) {
+    result.ok = false;
+    result.error = "bucket is empty";
+    return result;
+  }
+
+  if (!BucketExists(bucket)) {
+    result.ok = false;
+    result.error = "bucket does not exist";
+    return result;
+  }
+
+  const std::string scan_prefix =
+      ObjectStoreKeyCodec::BucketIndexKey(bucket, prefix);
+
+  const auto index_keys = kv_.list_keys_with_prefix(scan_prefix);
+
+  const std::string base_prefix = "bucketidx:" + bucket + ":";
+
+  for (const auto& index_key : index_keys) {
+    if (index_key.size() < base_prefix.size()) {
+      continue;
+    }
+
+    const std::string object_key =
+        index_key.substr(base_prefix.size());
+
+    const auto raw_meta =
+        kv_.get(ObjectStoreKeyCodec::ObjectMetaKey(bucket, object_key));
+
+    if (!raw_meta.has_value()) {
+      continue;
+    }
+
+    auto meta = deserialize_metadata(*raw_meta);
+
+    if (!meta.has_value()) {
+      continue;
+    }
+
+    if (meta->state == ObjectState::Deleted) {
+      continue;
+    }
+
+    ObjectListEntry entry;
+    entry.key = meta->key;
+    entry.size_bytes = meta->size_bytes;
+    entry.content_type = meta->content_type;
+    entry.etag = meta->etag;
+    entry.updated_at_epoch_ms = meta->updated_at_epoch_ms;
+
+    result.objects.push_back(std::move(entry));
+  }
+
   return result;
 }
 

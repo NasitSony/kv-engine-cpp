@@ -51,4 +51,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/object_store_demo.dir/DependInfo.cmake"
   "CMakeFiles/object_store_write_demo.dir/DependInfo.cmake"
   "CMakeFiles/object_store_recover_demo.dir/DependInfo.cmake"
+  "CMakeFiles/object_store_list_demo.dir/DependInfo.cmake"
   )

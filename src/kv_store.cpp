@@ -228,4 +228,19 @@ void KVStore::ApplyDel(const std::string& key) {
   map_.erase(key);
 }
 
+std::vector<std::string>
+KVStore::list_keys_with_prefix(const std::string& prefix) const {
+  std::shared_lock lock(mu_);
+
+  std::vector<std::string> result;
+
+  for (const auto& [k, _] : map_) {
+    if (k.rfind(prefix, 0) == 0) {
+      result.push_back(k);
+    }
+  }
+
+  return result;
+}
+
 } // namespace kv
