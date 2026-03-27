@@ -22,6 +22,18 @@ The system evolves step-by-step from a local storage engine to a replicated dist
 - Adds **mark-and-sweep garbage collection** to reclaim unreachable object chunks created by overwrites or deletes
   
 
+## 🔗 Part of the Veri* AI Infrastructure Stack
+
+VeriStore is the **storage foundation** of a layered AI infrastructure stack:
+
+|          Layer         |             Project          | Role |
+|------------------------|------------------------------|------|
+|          Storage       | **VeriStore** (this project) | WAL durability, crash recovery, Raft replication, object storage |
+| Inference Serving | [llm-serving-cache](https://github.com/NasitSony/llm-serving-cache) | KV-cache placement and routing control plane, backed by VeriStore |
+| Workload Orchestration | [Veriflow](https://github.com/NasitSony/Veriflow) | GPU-aware scheduler for training, inference, and evaluation jobs |
+
+VeriStore's WAL-backed KV engine and object storage layer serve as the durable metadata backend for both llm-serving-cache and Veriflow — providing crash-consistent state across the entire stack.
+
 ## 📊 Performance Snapshot (Group Commit vs Immediate Flush)
 
 **Workload:** 10,000 sequential `PUT`s + final `FLUSH` (local disk)
