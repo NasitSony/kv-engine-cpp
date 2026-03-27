@@ -1,0 +1,14 @@
+# Tell GitHub linguist to ignore build artifacts and generated files
+build/** linguist-generated=true
+build/** linguist-vendored=true
+
+# Ignore macOS artifacts
+**/.DS_Store linguist-generated=true
+**/._* linguist-generated=true
+
+# Mark shell scripts as non-primary
+*.sh linguist-detectable=false
+
+# Ensure C++ is detected correctly
+*.cpp linguist-language=C++
+*.h linguist-language=C++
