@@ -147,7 +147,7 @@ bool Wal::write_record(Type t, uint64_t seq, std::string_view key, std::string_v
   buffer_.push_back(std::move(rec));
   return true;
 }
-
+//rebuilds the in-memory KV store from the WAL file during recovery.
 bool Wal::replay_into(KVStore& store, uint64_t& max_seq) {
   if (fd_ < 0) return false;
 
@@ -224,11 +224,13 @@ bool Wal::replay_into(KVStore& store, uint64_t& max_seq) {
   return true;
 }
 
+//repairs the WAL by cutting off corrupted or incomplete data
 bool Wal::truncate_to_last_good() {
   if (fd_ < 0) return false;
   return ::ftruncate(fd_, static_cast<off_t>(last_good_offset_)) == 0;
 }
 
+//safely closes the WAL file descriptor
 void Wal::close() {
   if (fd_ >= 0) { ::close(fd_); fd_ = -1; }
 }
