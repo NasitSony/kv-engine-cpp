@@ -233,6 +233,7 @@ void Wal::close() {
   if (fd_ >= 0) { ::close(fd_); fd_ = -1; }
 }
 
+// Method returns true if all writes return true
 bool Wal::flush() {
   if (fd_ < 0) return false;
   if (buffer_.empty()) return true;
